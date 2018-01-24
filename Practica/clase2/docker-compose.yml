@@ -1,0 +1,9 @@
+mongodb:
+  image: mongo:3.0
+  ports:
+    - "27017:27017"
+
+mongo-seed:
+  build: ./mongo-seed
+  links:
+    - mongodb
