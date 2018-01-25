@@ -1,0 +1,7 @@
+{"cliente" : "PEREIRA S.A.", "cuit" : "30404884842", "region" : ["CENTRO","NEA","NOA","CABA"], "direccion":{calle:"Zuviria", numero:1234, piso: "4to", dto:"A", localidad:"CABA"}}
+{"cliente" : "GOMESA S.A.", "cuit" : "30404884831", "region" : ["CENTRO"], "direccion":{calle:"9 de julio", numero:1010, localidad:"TANDIL", provincia:"BUENOS AIRES"}}
+{"cliente" : "ZARILA S.A.", "cuit" : "30404884820", "region" : ["CENTRO","NOA"], "direccion":{calle:"25 de mayo", numero:941, piso: "2do", dto:"B", localidad:"CABA"}}
+{"cliente" : "MALVASI S.A.", "cuit" : "30404884819", "region" : ["NEA"], "direccion":{calle:"Reconquista", numero:654, piso: "1er", dto:"A", localidad:"CABA"}}
+{"cliente" : "TRUCHEX S.A.", "cuit" : "30404884850", "region" : ["CABA"], "direccion":{calle:"Larrea", numero:775, piso: "1ro", localidad:"CABA"}}
+{"cliente" : "GALINDO S.A.", "cuit" : "30404884869", "region" : ["CENTRO","CABA"], "direccion":{calle:"Virrey Ceballos", numero:244, piso: "4to", localidad:"CABA"}}
+{"cliente" : "SCIOLIX S.A.", "cuit" : "30404884834", "region" : ["CENTRO","CABA"], "direccion":{calle:"Av. Maipu", numero:837, piso: "6to", dto:"A", localidad:"CABA"}}

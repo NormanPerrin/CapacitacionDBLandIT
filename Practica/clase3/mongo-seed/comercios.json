@@ -1,0 +1,18 @@
+{"_id":{"$oid":"560079b8451f0fa16db9b597"},"tipoComercio":"Pub","razonSocial":"Rey de Copas","direccion":"Gorriti 5176","teléfonos":[2.068522e+07],"ubicacion":[-58.432929,-34.588042]}
+{"_id":{"$oid":"560079b8451f0fa16db9b598"},"tipoComercio":"Pub","razonSocial":"Cooper","direccion":"Av Del Libertador 6631","teléfonos":[4.3120225e+07],"ubicacion":[-58.449499,-34.550493]}
+{"_id":{"$oid":"560079b8451f0fa16db9b599"},"tipoComercio":"Pub","razonSocial":"BRETANNIA BAR de tapas y tragos","direccion":"Av Elcano 3049","teléfonos":[4.5533004e+07],"ubicacion":[-58.458552,-34.571139]}
+{"_id":{"$oid":"560079b8451f0fa16db9b59a"},"tipoComercio":"Pub","razonSocial":"Toffers Gastro Pub","direccion":"Av Maipú 2299","teléfonos":[4.7948006e+07],"ubicacion":[-58.488334,-34.512688]}
+{"_id":{"$oid":"560079b8451f0fa16db9b59b"},"tipoComercio":"Restaurante","razonSocial":"Blue Soho","direccion":"El Salvador 4735","teléfonos":[4.8319147e+07],"ubicacion":[-58.427796,-34.587567]}
+{"_id":{"$oid":"560079b8451f0fa16db9b59c"},"tipoComercio":"Restaurante","razonSocial":"Miranda","direccion":"Costa Rica 5602","teléfonos":[4.7714255e+07],"ubicacion":[-58.435178,-34.582338]}
+{"_id":{"$oid":"560079b9451f0fa16db9b59d"},"tipoComercio":"Restaurante","razonSocial":"Casa Cruz","direccion":"Uriarte 1658","teléfonos":[4.8331112e+07],"ubicacion":[-58.431744,-34.58686]}
+{"_id":{"$oid":"560079b9451f0fa16db9b59e"},"tipoComercio":"Restaurante","razonSocial":"Armenia","direccion":"Armenia 1366","teléfonos":[4.77625e+07],"ubicacion":[-58.431058,-34.591524]}
+{"_id":{"$oid":"560079b9451f0fa16db9b59f"},"tipoComercio":"Restaurante","razonSocial":"Osaka","direccion":"Soler 5608","teléfonos":[4.7714255e+07],"ubicacion":[-58.433118,-34.578522]}
+{"_id":{"$oid":"560079b9451f0fa16db9b5a0"},"tipoComercio":"Restaurante","razonSocial":"Olsen","direccion":"Gorriti 5870","teléfonos":[4.7767677e+07],"ubicacion":[-58.44008,-34.582822]}
+{"_id":{"$oid":"560079b9451f0fa16db9b5a1"},"tipoComercio":"Restaurante","razonSocial":"Mosoq","direccion":"El Salvador 5800","teléfonos":[4.7557974e+07],"ubicacion":[-58.437452,-34.581762]}
+{"_id":{"$oid":"560079b9451f0fa16db9b5a2"},"tipoComercio":"Restaurante","razonSocial":"Mumbai","direccion":"Honduras 5684","teléfonos":[4.7759791e+07],"ubicacion":[-58.437226,-34.583423]}
+{"_id":{"$oid":"560079b9451f0fa16db9b5a3"},"tipoComercio":"Hotel","razonSocial":"Gran Hotel Mar del Plata","direccion":"Rivadavia 2235","ciudad":"Mar del Plata","teléfonos":[{"$numberLong":"2234930061"}],"ubicacion":[-57.544793,-38.001613]}
+{"_id":{"$oid":"560079b9451f0fa16db9b5a4"},"tipoComercio":"Hotel","razonSocial":"Hotel Guerrero","direccion":"Diagonal Alberdi J.b. 2288","ciudad":"Mar del Plata","teléfonos":[{"$numberLong":"2234958851"}],"ubicacion":[-57.54136,-37.99999]}
+{"_id":{"$oid":"560079b9451f0fa16db9b5a5"},"tipoComercio":"Hotel","razonSocial":"Gran Hotel Tronador","direccion":"Moreno 2541","ciudad":"Mar del Plata","teléfonos":[{"$numberLong":"2234951800"}],"ubicacion":[-57.549599,-38.001072]}
+{"_id":{"$oid":"560079ba451f0fa16db9b5a6"},"tipoComercio":"Hotel","razonSocial":"Sheraton Mar del Plata Hotel","direccion":"Leandro N. Alem 4221","ciudad":"Mar del Plata","teléfonos":[3.09379072e+08],"ubicacion":[-57.538613,-38.029744]}
+{"_id":{"$oid":"560079ba451f0fa16db9b5a7"},"tipoComercio":"Hotel","razonSocial":"Gran Hotel Dora","direccion":"Buenos Aires 1841","ciudad":"Mar del Plata","teléfonos":[{"$numberLong":"2234910033"}],"ubicacion":[-57.54136,-38.003507]}
+{"_id":{"$oid":"560079ba451f0fa16db9b5a8"},"tipoComercio":"Hotel","razonSocial":"Hotel Iruña","direccion":"Diagonal Juan Bautista Alberdi 2270","ciudad":"Mar del Plata","teléfonos":[{"$numberLong":"2234911060"}],"ubicacion":[-57.542733,-37.998908]}
