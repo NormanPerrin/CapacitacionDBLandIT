@@ -138,32 +138,92 @@ db.coleccionInexistente.insert(
 
 db.coleccionInexistente.find({ x: {$type: 2} })
 ```
-p. ver como dejar ordenado
+p.
 ```
 var facturas = db.facturas.find(
-  { nroFactura: 9999 },
+  { nroFactura: 9998 },
   { item: 1, _id: 0 }
 ).map(function (factura) {return factura.item})[0]
 
-db.facturas.insert(
-  { nroFactura: 9998 },
-  { $pushAll: {item: facturas} },
+db.facturas.update(
+  { nroFactura: 9999 },
+  {
+    $push: {
+      item: {
+        $each: facturas,
+        $sort: { precio: 1 }
+      }
+    }
+  },
   { multi: true }
 )
 ```
 q.
 ```
+var facturas = db.facturas.find(
+  { nroFactura: 9996 },
+  { item: 1, _id: 0 }
+).map(function (factura) {return factura.item})[0]
 
+db.facturas.update(
+  { nroFactura: 9999 },
+  {
+    $push: {
+      item: {
+        $each: facturas,
+        $sort: { precio: -1 },
+        $slice: 3
+      }
+    }
+  },
+  { multi: true }
+)
 ```
-r. ver como hacer constrain array
+r.
 ```
 db.facturas.update(
-  { "cliente.apellido": "Gonzalez", "cliente.nombre": "Julio" },
-  { $addToSet: { intereses: ["Mecanica"] } },
-  { multi: true }
+    {},
+    {
+        $push: {
+            "cliente.intereses": {
+                $each: ["Mecanica"],
+                $slice: 2
+            }
+        }
+    },
+    { multi: true }
 )
 ```
 s.
 ```
-db.facturas.find({ nroFactura: 3355 })
+var factura = db.facturas.find({ nroFactura: 3355 }).next()
+factura.fechaVencimiento = ISODate()
+factura.condPago = "CONTADO"
+db.facturas.save(factura)
+```
+t.
+```
+factura = db.facturas.find({ nroFactura: 3355 }).next()
+delete factura._id
+factura.nroFactura = "Invalido"
+db.facturas.remove({nroFactura: 3355})
+db.facturas.save(factura)
+```
+u.
+```
+db.facturas.findAndModify({
+  query: { "cliente.region": "CABA" },
+  sort: { nroFactura: 1 },
+  update: { $inc: { cuota: 1 } },
+  new: true
+});
+```
+v.
+```
+var itemEliminado = db.facturas.findAndModify({
+  query: { nroFactura: 1007 },
+  update: { $pop: { item: -1 } },
+  fields: { item: 1, _id: 0 },
+  new: false
+}).item[0];
 ```
