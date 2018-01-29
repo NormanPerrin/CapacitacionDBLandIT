@@ -170,9 +170,9 @@ rs.slaveOk();
 **Cómo levantar instancias sharding**
 ```js
 // 1) Levanto servers mongod con –shardsvr
-mongod –shardsvr --replSet rs --port 27058 --dbpath dbpath/ --fork --logpath logpath/mongodb.log
-mongod –shardsvr --replSet rs --port 27059 --dbpath dbpath/ --fork --logpath logpath/mongodb.log
-mongod –shardsvr --replSet rs --port 27060 --dbpath dbpath/ --fork --logpath logpath/mongodb.log
+mongod --shardsvr --replSet rs --port 27058 --dbpath dbpath/ --fork --logpath logpath/mongodb.log
+mongod --shardsvr --replSet rs --port 27059 --dbpath dbpath/ --fork --logpath logpath/mongodb.log
+mongod --shardsvr --replSet rs --port 27060 --dbpath dbpath/ --fork --logpath logpath/mongodb.log
 
 // 2) Levanto server de configuración
 mongod --configsvr --port 27500 --dbpath dbpath/ --fork --logpath logpath/mongodb.log --logappend
