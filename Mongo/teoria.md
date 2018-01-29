@@ -68,21 +68,20 @@ db.coleccion.aggregate(
 * Una réplica puede tener hasta 50 nodos, pero solo 7 votantes.
 * La replicación es asincrónica, salvo que se especifique.
 * Si el nodo primario no está disponible, se elige a un secundario por quorum, teniendo en cuenta el que esté más actualizado y con prioridad mayor. Algo importante a tener en cuenta es que aunque se caiga un server, el quorum sigue siendo el mismo.
-* Los nodos secundarios ven el OPLOG del primario y replican sus operaciones.
 * Se le puede poner prioridad para hacerlo más o menos elegible para ser master. Si se le da prioridad 0 a un nodo, significa que no puede ser master nunca, algunos casos útiles:
     * Si prefiero que las escrituras las reciba otro nodo.
     * Nodo de backup o reportes.
-* Pueden estar ocultos los nodos, con una propiedad "hidden" con valor 1. Estos nodos no son visibles para el cliente.
-    * Deben tener prioridad 0.
-    * Los miembros delay son miembros ocultos.
-    * Se suelen usar en reporting o backups.
-    * Votan en elecciones.
-* Se puede modificar el *Read Preference* también, indicando de qué nodo se quiere leer:
-    * primary: (default).
-    * Primary Preferred: lee preferentemente del primario, pero si no hay ninguno momentáneamente, leerá del secundario.
-    * Secondary: únicamente secundario.
-    * Secondary Preferred: preferentemente del secundario, si no hay secu levantado, lee prima.
-    * Nearest: con menor latencia.
+    
+**Tipos de nodos**
+* Primario: recibe escrituras y replica data a través de su OPLOG, que leen los secundarios.
+* Secundarios:
+   * Prioridad 0: no puede ser primario ni disparar elecciones.
+   * Oculto: son prioridad 0 siempre. No dan acceso a lectura externa.
+   * Retardados: prioridad 0. Ocultos. Con retardo.
+* Árbitro: 
+   * Puede votar en elecciones.
+   * No guarda data.
+   * Tienen prioridad 0.
 
 **Write concern:**
 Se determina cuando una operación de escritura es considerada exitosa. Puede especificarse para todo el RS, conexión u operación. Las opciones son:
