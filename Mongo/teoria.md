@@ -60,6 +60,90 @@ db.coleccion.aggregate(
 * Cuando inicia el sistema se verifica si hay alguna transacción con estado diferente a "done". De ser así se maneja a mano el rollback o cancelación de todo según la info que se tenga.
 
 ## Índices
+**Tipos de índices:**
+* Simple
+* Compuesto
+* Basdo en Hash
+* Geoespacial
+* Multikey
+* Full text
+
+**Propiedades de los índices:**
+* `{ unique: boolean }`
+* `{ sparse: boolean }` - No crea entradas para documentos que no tengan ese atributo, se los saltea.
+* `{ expireAfterSeconds: 3600 }` - TTL (Time To Leave), el motor borrará el índice cuando se alcance la fecha del índice (si expireAfterSeconds es 0) o cuando pase el tiempo.
+
+**Operaciones sobre índices:**
+```js
+db.collname.createIndex(...)
+
+db.collname.dropIndex(...)
+
+db.collname.getIndexes()
+
+db.collname.reIndex()
+```
+
+**Creación según tipos de índices**
+```js
+// Simple
+db.facturas.createIndex({ fechaEmision: 1 }) // 1 ascendente, -1 descendente
+
+// Compuesto
+db.facturas.createIndex({ "cliente.region": 1, condPago: 1 }) // es importante el orden en que van
+
+// Hash
+db.facturas.createIndex({ "nroFactura": "hashed" })
+
+// Geo2d
+db.comercios.createIndex({ "ubicacion": "2d" }) // pueden ser compuestos también
+
+// Geo2dSphere
+db.comercios.createIndex({ ubicacion: "2dsphere" })
+
+// Text
+db.facturas.createIndex({ "item.producto": "text" }) // solo puede haber 1 índice text por cada colección
+
+// Se le pueden pasar opciones:
+//   default_language: "spanish"
+//   language_override: "idioma" - idioma sería un atributo de la colección, con un string indicando el idioma
+
+// Full Text
+db.facturas.createIndex({ "$**": "text" })
+```
+
+**Búsqueda de índices:**
+```js
+// Geo2d (se usa $near y $maxDistance)
+db.comercios.find({ ubicacion: {$near:[ -58.432929, -34.588042 ], $maxDistance: 1} }) // si se utiliza 2 puntos de coordenadas, el maxDistance queda en radianes
+
+// Geo2d se puede hacer esta búsqueda también, pero acá la distancia va a estar en metros.
+$near: {
+   $geometry: {type: "Point", coordinates: [ <longitud>, <latitud> ]},
+   $maxDistance: <distancia en metros>,
+   $minDistance: <distancia en metros>
+}
+
+// Geo2dSphere
+db.comercios.find({ ubicacion: {$near: [ -58.432929, -34.588042 ], spherical: true, $maxDistance: 5} })
+
+// Text
+db.facturas.find({ $text: { $search: "12mm Manoni" } }).count() // búsca 12mm y Manoni, si quiero buscar todo junto se pone en un regexp: /12mm Manoni/
+
+// Text ordenado por match
+db.libros
+   .find({ $text: {$search: "argentina gaucho fierro"} }, { titulo: 1, score: {$meta:"textScore"} })
+   .sort({ score: {$meta: "textScore"} })
+```
+
+**Tener en cuenta:**
+* Estructura de índices basados en árbol B+
+* El `_id` que se autogenera en una colección, es un índice creciente (rango), se compone de:
+   * Fecha
+   * PC
+   * PID
+   * Contador
+* Cuando se crea un índice con un atributo de un objeto de un array, mongo crea una clave de índice por cada elemento del array referenciado. Esto es un **ìndice multikey**. Como limitaciones, no puede crear hashed indexes, no puede crear shared multikey index.
 
 ## Replica Set.
 * Grupo de instancias mongod.
@@ -75,9 +159,9 @@ db.coleccion.aggregate(
 **Tipos de nodos**
 * Primario: recibe escrituras y replica data a través de su OPLOG, que leen los secundarios.
 * Secundarios:
-   * Prioridad 0: no puede ser primario ni disparar elecciones.
-   * Oculto: son prioridad 0 siempre. No dan acceso a lectura externa.
-   * Retardados: prioridad 0. Ocultos. Con retardo.
+   * Prioridad 0: no puede ser primario ni disparar elecciones. Útiles para evitar que un nodo sea primario, puede ser debido a que no es óptimo para escrituras, o por una razón geográfica del nodo.
+   * Oculto: son prioridad 0 siempre. No dan acceso a lectura externa. Útiles para reporting o backups.
+   * Retardados: prioridad 0. Ocultos. Con retardo. Útiles para guardar operaciones en caso de errores replicados.
 * Árbitro: 
    * Puede votar en elecciones.
    * No guarda data.
@@ -167,8 +251,8 @@ rs.slaveOk();
 * Guardan la metadata del server particionado.
 * Usando config servers se deben considerar ciertas restricciones, no se pueden tener:
    * Nodos retardados.
-   * Árbitros.
-   * Nodos con buildIndexes en 0 (no construyen índices).
+   * Árbitros.
+   * Nodos con buildIndexes en 0 (no construyen índices).
 
 **Cómo levantar instancias sharding**
 ```js
@@ -215,3 +299,21 @@ db.chunks.find({}, { min: 1, max: 1, shard: 1, _id: 0, ns: 1 }).pretty()
 * Las operaciones son idempotentes, o sea que producen el mismo resultado sin importar cuántas veces las apliques.
 * Así la replicación puede sincronizar data solapádamente.
 * Loguea operaciones de escritura, así los nodos secundarios leen de este archivo y replican la operación en sus nodos.
+
+## Monitoreo
+
+### Explain
+Se le puede agregar a un cursor y el mismo ejecutará la operación planificada y dirá los pasos que realizó, según los detalles que queramos:
+* `.explain("queryPlanner")` (default)
+* `.explain("executionStats")` Devuelve detalles de ejecución del plan ganador
+* `.explain("allPlansExecution")` Devuelve detalles de todos los planes que tomó en cuenta
+
+### Hints
+A una query se le pueden pasar *hints* para que tome como índice un atributi en una búsqueda. Si el motor ve que el índice pasado como parámetro no tiene sentido, no lo toma en cuenta. Ej.
+```js
+// Va a buscar por el índice condPago
+db.facturas.find({ condPago: {$in: [“CONTADO”, ”30 Ds FF”] }).hint({ condPago: 1 })
+
+// También podemos forzar al motor a hacer un COLLSCAN
+db.facturas.find({ condPago: {$in: [“CONTADO”, ”30 Ds FF”] }).hint({ $natural: 1 })
+```
