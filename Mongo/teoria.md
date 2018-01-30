@@ -165,7 +165,10 @@ rs.slaveOk();
 
 **Config Server:**
 * Guardan la metadata del server particionado.
-* 
+* Usando config servers se deben considerar ciertas restricciones, no se pueden tener:
+   * Nodos retardados.
+   * Árbitros.
+   * Nodos con buildIndexes en 0 (no construyen índices).
 
 **Cómo levantar instancias sharding**
 ```js
