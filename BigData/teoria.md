@@ -1,7 +1,13 @@
 # BigData
 > *Volumen masivo de datos, tanto estructurados como no-estructurados, los cuales son demasiado grandes y difíciles de procesar con las bases de datos y el software tradicionales.*
 
-Técnicamente progresó al bajar los costos de almacenamiento y haberse y haberse mantenido estable el costo de procesamiento por valor energía. También porque la potencia de los procesadores se mantuvo estable, solamente se agregan más a las computadoras, lo que benefició la programación en paralelo y el escalamiento horizontal. 
+Técnicamente progresó al bajar los costos de almacenamiento y haberse y haberse mantenido estable el costo de procesamiento por valor energía. También porque la potencia de los procesadores se mantuvo estable, solamente se agregan más a las computadoras, lo que benefició la programación en paralelo y el escalamiento horizontal.
+
+**4Vs**
+* Volumen: en el inicio los datos eran creados por los propios empleados, pero ahora son generados automáticamente por máquinas, redes sociales.
+* Variedad: Antes se almacenaba la data en hojas de cálculo y bases de datos. Ahora la data llega en muchos formatos, esto hace que los datos sean desestructurados.
+* Velocidad: ritmo de entrada de los datos.
+* Veracidad: sesgo ruido o alteración de los datos. Los datos que se almacenan deben ser relevantes al dominio del problema y válidos.
 
 ## Temas
 - Conceptos base.
