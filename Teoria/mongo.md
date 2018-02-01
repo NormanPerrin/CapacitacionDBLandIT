@@ -160,7 +160,7 @@ db.libros
 * Primario: recibe escrituras y replica data a través de su OPLOG, que leen los secundarios.
 * Secundarios:
    * Prioridad 0: no puede ser primario ni disparar elecciones. Útiles para evitar que un nodo sea primario, puede ser debido a que no es óptimo para escrituras, o por una razón geográfica del nodo.
-   * Oculto: son prioridad 0 siempre. No dan acceso a lectura externa. Útiles para reporting o backups.
+   * Oculto: son prioridad 0 siempre. No dan acceso a lectura externa. Útiles para reporting o backups, los de buckups también pueden tener buildIndexes en 0 así se salvan de generar índices si no es necesario y resulta en una operación costosa.
    * Retardados: prioridad 0. Ocultos. Con retardo. Útiles para guardar operaciones en caso de errores replicados.
 * Árbitro: 
    * Puede votar en elecciones.
@@ -247,12 +247,17 @@ rs.slaveOk();
 6. Habilitar distribución bd. (puede ser pos 5)
 7. Aplicar sharding a la colección.
 
+**Ruteador:**
+* Instancia mongos.
+* Cachea información del config server al iniciar y cuando hay un cambio en la metadata del cluster.
+
 **Config Server:**
 * Guardan la metadata del server particionado.
 * Usando config servers se deben considerar ciertas restricciones, no se pueden tener:
    * Nodos retardados.
    * Árbitros.
    * Nodos con buildIndexes en 0 (no construyen índices).
+* En producción el ConfigRS deberá tener 3 servidores
 
 **Cómo levantar instancias sharding**
 ```js
@@ -290,6 +295,24 @@ db.chunks.find({}, { min: 1, max: 1, shard: 1, _id: 0, ns: 1 }).pretty()
 // También puedo queriar un find y hacer explain.
 ```
 
+**Índices y sharding**
+El particionamiento puede ser basado en:
+* Rangos
+   * Divide el conjunto de datos en rangos disjuntos determinados por los valores de las claves de la partición.
+   * Definimos un chunk como un rango de valores con un mínimo y un máximo.
+   * 2 documentos de rangos similares tienen alta probabilidad de estar en un mismo chunk.
+   * Búsqueda por rango eficiente.
+* Hashes
+   * Calcula el valor de hash de una clave y utiliza ese valor para distribuir chunks.
+   * Distribución aleatoria de documentos (distribución uniforme).
+   * 2 documentos de rangos similares tienen baja probabilidad de estar en un mismo chunk.
+   * Búsqueda por rango ineficiente, debe fijarse en los distintos chunks.
+
+**Mantenimiento de shards**
+Lo hace mediante 2 procesos:
+* Splitting: Cuando un chunk crece más del tamaño especificado (default 64Mb, valores entre 1 y 1024 Mb), se divide en 2 chunks (división lógica). Se disparan mediante operaciones de inserción y actualización.
+* Balancing: cuando ve shards desbalanceados, hace migraciones de chunks (migraciones físicas), esta operación es administrada en background.
+
 ## Journal
 * Propia para cada una de las instancias al igual que OPLOG, pero este no juega en la replicación, juega si hay una caída del servidor
 * Guarda información “delta” en disco cada poco tiempo, así si se cae el motor, nos dice qué operaciones pasaron y los cambios chicos que se tienen que hacer. Si tiene datos corruptos, puede recuperarlos mediante el journal.
@@ -299,6 +322,7 @@ db.chunks.find({}, { min: 1, max: 1, shard: 1, _id: 0, ns: 1 }).pretty()
 * Las operaciones son idempotentes, o sea que producen el mismo resultado sin importar cuántas veces las apliques.
 * Así la replicación puede sincronizar data solapádamente.
 * Loguea operaciones de escritura, así los nodos secundarios leen de este archivo y replican la operación en sus nodos.
+* En caso de latencia entre un secundario y primario, el secundario puede ver a otro secundario para replicar operaciones.
 
 ## Monitoreo
 
