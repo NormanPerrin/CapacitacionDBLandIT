@@ -91,6 +91,3 @@ Casos en los que se desafían la disponibilidad cuando hay un solo servidor:
 * Distribuye partes del conjunto de datos en servidores de un cluster.
 * Es importante asegurara que los datos que se acceden en conjunto estén en un mismo nodo.
 * No ayuda tanto a la resistencia ante fallas, si un nodo falla, solo afecta a los usuarios que usaban ese nodo, pero sin replicación no tienen forma de acceder a esos datos.
-* Hay 2 procesos que se deben tener en cuenta:
-    * Splitting
-    * Balancing
