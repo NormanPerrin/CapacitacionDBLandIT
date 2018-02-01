@@ -1,5 +1,5 @@
 a.
-```
+```js
 function imprimirArray (arr) {
   arr.forEach(function (elem) {
     print(elem.producto);
@@ -7,13 +7,13 @@ function imprimirArray (arr) {
 }
 ```
 b.
-```
+```js
 var documento = db.facturas.find({ nroFactura: 5000 }).next()
 
 imprimirArray(documento.item)
 ```
 c.
-```
+```js
 var documento = db.facturas.find({ nroFactura: 1330 }).next()
 
 documento.item[0].precio = 15
@@ -21,7 +21,7 @@ documento.item[0].precio = 15
 db.items.insert(documento.item[0])
 ```
 d.
-```
+```js
 var documento = db.facturas.find({ nroFactura: 1144 }).next()
 
 for (var i = 0; i < documento.item.length; i++) {
@@ -31,7 +31,7 @@ for (var i = 0; i < documento.item.length; i++) {
 db.facturas.update({ nroFactura: 1144 }, documento)
 ```
 e.
-```
+```js
 var documento = db.facturas.find({ "cliente.apellido": "Manoni" })
     .sort({ nroFactura: -1 })
     .limit(1)
@@ -45,7 +45,7 @@ for (clave in documento) {
 }
 ```
 f.
-```
+```js
 var documento = db.facturas.find({ nroFactura: 2345 }).next()
 
 db.facturas.remove(documento)
@@ -56,7 +56,7 @@ delete documento.fechaVencimiento;
 db.facturasErroneas.insert(documento);
 ```
 g.
-```
+```js
 var documento = db.facturas.find({ nroFactura: 1020 }).next()
 
 if (documento.condPago == "CONTADO") {
@@ -65,7 +65,7 @@ if (documento.condPago == "CONTADO") {
 }
 ```
 h.
-```
+```js
 var items = db.facturas.aggregate(
     { $unwind: "$item" },
     { $group: {_id: {producto: "$item.producto", precio: "$item.precio" }} }
@@ -81,7 +81,7 @@ var items = db.facturas.aggregate(
 db.items.insert(items)
 ```
 i.
-```
+```js
 var clientes = db.facturas.aggregate(
     {
         $group: {
@@ -98,7 +98,7 @@ var clientes = db.facturas.aggregate(
 db.clientes.insert(clientes)
 ```
 j.
-```
+```js
 var cliente = db.facturas.aggregate(
     {
         $group: {
@@ -114,7 +114,7 @@ db.clientes.remove({ cuit: cliente._id.cliente.cuit })
 db.facturas.remove({ "cliente.cuit": cliente._id.cliente.cuit })
 ```
 k.
-```
+```js
 var cursor = db.facturas.find({ "cliente.region": "CABA" })
 
 while (cursor.hasNext()) {
@@ -128,13 +128,13 @@ while (cursor.hasNext()) {
 }
 ```
 l.
-```
+```js
 db.system.save({ _id:"miSuma", value: imprimirArray })
 
 db.loadServerScripts()
 ```
 m.
-```
+```js
 function comparar (coleccion1, coleccion2) {
     var facturasDeClientes = db.facturas.aggregate(
         {

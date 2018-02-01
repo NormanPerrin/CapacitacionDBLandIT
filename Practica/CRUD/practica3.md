@@ -1,5 +1,5 @@
 a.
-```
+```js
 var item_destornillador = {
     "cantidad" : 2.0,
     "precio" : 20.0,
@@ -12,21 +12,21 @@ db.facturas.update(
 )
 ```
 b.
-```
+```js
 db.facturas.update(
     { nroFactura: 1000 },
     { $pop: { item: -1 } }
 )
 ```
 c.
-```
+```js
 db.facturas.update(
     { nroFactura: 1000 },
     { $pull: { item: { producto: /^CORREA 10mm$/ } } }
 )
 ```
 d.
-```
+```js
 var factura = db.facturas.find({ nroFactura: 1000 }).next()
 
 delete factura.item
@@ -37,14 +37,14 @@ db.facturas.update(
 )
 ```
 e.
-```
+```js
 db.facturas.update(
     { nroFactura: 1000 },
     { $unset: {item: ""} }
 )
 ```
 f.
-```
+```js
 var facturas = db.facturas.find(
   { nroFactura: 1002 },
   { item: 1, _id: 0 }
@@ -57,7 +57,7 @@ db.facturas.update(
 )
 ```
 g.
-```
+```js
 db.facturas.update(
   { "cliente.apellido": "Lavagno" },
   { $set: { "cliente.tipo": "VIP" } },
@@ -65,7 +65,7 @@ db.facturas.update(
 )
 ```
 h.
-```
+```js
 var regalo = {
   "cantidad" : 1.0,
   "precio" : 0.0,
@@ -79,7 +79,7 @@ db.facturas.update(
 )
 ```
 i.
-```
+```js
 db.facturas.update(
   { "cliente.apellido": "Gonzalez", "cliente.nombre": "Julio" },
   { $addToSet: { intereses: ["Plomeria", "Electronica"] } },
@@ -87,18 +87,18 @@ db.facturas.update(
 )
 ```
 j.
-```
+```js
 db.facturas.find({ item: { $elemMatch: { producto: /^TALADRO 12mm$/ } } })
 ```
 k.
-```
+```js
 db.facturas.find(
   { item: { $elemMatch: { producto: /^TALADRO 12mm$/ } } },
   { _id: 0, nroFactura: 1, "item.$": 1 }
 )
 ```
 l.
-```
+```js
 db.facturas.update(
   { item: { $elemMatch: { producto: /^CORREA 12mm/, cantidad: 11 } } },
   { $inc: { "item.$.precio": -1 } },
@@ -106,14 +106,14 @@ db.facturas.update(
 )
 ```
 m.
-```
+```js
 db.facturas.find(
   { item: { $elemMatch: { producto: /^CORREA 12mm/, cantidad: 11 } } },
   { "item.$.precio": 1, _id: 0 }
 )
 ```
 n.
-```
+```js
 db.coleccionInexistente.update(
   {},
   {
@@ -127,7 +127,7 @@ db.coleccionInexistente.update(
 )
 ```
 o.
-```
+```js
 db.coleccionInexistente.insert(
   [
     { x: new Date() },
@@ -139,7 +139,7 @@ db.coleccionInexistente.insert(
 db.coleccionInexistente.find({ x: {$type: 2} })
 ```
 p.
-```
+```js
 var facturas = db.facturas.find(
   { nroFactura: 9998 },
   { item: 1, _id: 0 }
@@ -159,7 +159,7 @@ db.facturas.update(
 )
 ```
 q.
-```
+```js
 var facturas = db.facturas.find(
   { nroFactura: 9996 },
   { item: 1, _id: 0 }
@@ -180,7 +180,7 @@ db.facturas.update(
 )
 ```
 r.
-```
+```js
 db.facturas.update(
     {},
     {
@@ -195,14 +195,14 @@ db.facturas.update(
 )
 ```
 s.
-```
+```js
 var factura = db.facturas.find({ nroFactura: 3355 }).next()
 factura.fechaVencimiento = ISODate()
 factura.condPago = "CONTADO"
 db.facturas.save(factura)
 ```
 t.
-```
+```js
 factura = db.facturas.find({ nroFactura: 3355 }).next()
 delete factura._id
 factura.nroFactura = "Invalido"
@@ -210,7 +210,7 @@ db.facturas.remove({nroFactura: 3355})
 db.facturas.save(factura)
 ```
 u.
-```
+```js
 db.facturas.findAndModify({
   query: { "cliente.region": "CABA" },
   sort: { nroFactura: 1 },
@@ -219,7 +219,7 @@ db.facturas.findAndModify({
 });
 ```
 v.
-```
+```js
 var itemEliminado = db.facturas.findAndModify({
   query: { nroFactura: 1007 },
   update: { $pop: { item: -1 } },

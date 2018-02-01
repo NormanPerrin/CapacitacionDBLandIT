@@ -1,5 +1,5 @@
 1.
-```
+```js
 // Levanto shards
 ./create_rs.sh
 
@@ -43,7 +43,7 @@ a. El cluster tiene 8 nodos en total:
 * 1 mongos
 c. Puede ser mayority. Independientemente del write concern, las lecturas dependen del read preference, los cuales pueden setearse para que se lea desde los secundarios también y no solo el primario. Con un read preference de "secondary".
 d. Podría agregarse un nodo con delay para tener contra errores que puedan ocurrir y se repliquen. También se podría tener un servidor para backup oculto de lecturas del cliente, que solo guarde datos replicados.
-```
+```js
 cfg = rs.conf()
 
 // configuración desde primary de nodo con delay

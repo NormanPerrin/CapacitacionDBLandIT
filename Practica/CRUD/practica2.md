@@ -1,5 +1,5 @@
 a.
-```
+```js
     db.facturas.find({
       "cliente.apellido": {
         $not: {$eq: "Manoni"},
@@ -11,21 +11,21 @@ a.
     })
 ```
 b.
-```
+```js
     db.facturas.find({
       "cliente.apellido": /i$/,
       "cliente.region": "CABA",
       item: {$elemMatch: {producto: /^TUERCA.*/}}
     })
 ```
-c.
+c.js
 ```
     db.facturas.find({
       item: {$elemMatch: {producto: /^CORREA.*/}}
     })
 ```
 d.
-```
+```js
     db.facturas.find({
       item: {$elemMatch: {cantidad: {$gt: 12}}}
     }, {
@@ -34,7 +34,7 @@ d.
     })
 ```
 e.
-```
+```js
     db.facturas.find({
     item: {
         $not: {$elemMatch: {producto: /^SET HERRAMIENTAS$/}}
@@ -42,7 +42,7 @@ e.
 })
 ```
 f.
-```
+```js
     function (cursor) {
       while (cursor.hasNext()) {
         var factura = cursor.next()
@@ -51,7 +51,7 @@ f.
     }
 ```
 g.
-```
+```js
     db.facturas.insert({
         "cliente" : {
             "apellido" : "Perrin",
@@ -73,11 +73,11 @@ g.
     })
 ```
 h.
-```
+```js
     db.otraColeccion.insert([{_id:1},{_id:1},{_id:2}], {ordered: false})
 ```
 i.
-```
+```js
     var bulk = db.facturas.initializeOrderedBulkOp();
 
     bulk
@@ -91,11 +91,11 @@ i.
     bulk.execute();
 ```
 j.
-```
+```js
     db.facturas.remove({ "cliente.region": "CENTRO" })
 ```
 k.
-```
+```js
     var factura_id = db.facturas
       .find({
         "cliente.apellido": "Lavagno",
@@ -109,7 +109,7 @@ k.
     db.facturas.remove(factura_id)
 ```
 l.
-```
+```js
     db.facturas
       .update({
         nroFactura: 1501
@@ -118,7 +118,7 @@ l.
       })
 ```
 m.
-```
+```js
     db.facturas
       .update({
         nroFactura: 1500
@@ -127,7 +127,7 @@ m.
       })
 ```
 n.
-```
+```js
     db.facturas
       .update({
         nroFactura: 1510
@@ -136,7 +136,7 @@ n.
       })
 ```
 o.
-```
+```js
     db.facturas
       .update({
         nroFactura: 1515
@@ -145,7 +145,7 @@ o.
       })
 ```
 p.
-```
+```js
     db.facturas
       .update({
         nroFactura: 1000
@@ -160,7 +160,7 @@ p.
       })
 ```
 q.
-```
+```js
     db.facturas
       .update({
         nroFactura: 1000
@@ -169,7 +169,7 @@ q.
       })
 ```
 r.
-```
+```js
     db.facturas.update(
       { nroFactura: 1000 },
       { $pull: { item: { producto: /^CORREA 10mm$/} } },
@@ -177,7 +177,7 @@ r.
     )
 ```
 s.
-```
+```js
     var factura = db.facturas.find({ nroFactura: 1001 })
 
     delete factura.item
@@ -188,14 +188,14 @@ s.
     )
 ```
 t.
-```
+```js
     db.facturas.update(
         { nroFactura: 1001 },
         { $unset: {item: ""} }
     )
 ```
 u.
-```
+```js
     var facturas = db.facturas.find(
       { nroFactura: 1002 },
       { item: 1, _id: 0 }
@@ -208,7 +208,7 @@ u.
     )
 ```
 v.
-```
+```js
     db.facturas.update(
       { "cliente.apellido": "Lavagno" },
       { $set: { "cliente.tipo": "VIP" } },
@@ -216,7 +216,7 @@ v.
     )
 ```
 w.
-```
+```js
     var regalo = {
       "cantidad" : 1.0,
       "precio" : 0.0,
@@ -230,7 +230,7 @@ w.
     )
 ```
 x.
-```
+```js
     db.facturas.update(
       { nroFactura: 9000 },
       { cliente: { apellido: "Gonzalez", nombre: "Julio" }, nroFactura: 9000 },
@@ -238,7 +238,7 @@ x.
     )
 ```
 y.
-```
+```js
     db.facturas.update(
       { "cliente.apellido": "Gonzalez", "cliente.nombre": "Julio" },
       { $addToSet: { intereses: ["Plomeria", "Electronica"] } },
@@ -246,7 +246,7 @@ y.
     )
 ```
 z.
-```
+```js
     var factura = db.facturas.find({ nroFactura: 9000 }).next()
     db.facturas.update(
       { nroFactura: 9000 },

@@ -1,5 +1,5 @@
 1.
-```
+```sh
 mongod --replSet rs --port 27058 --dbpath /Users/norman/tempData/db_pri --fork --logpath /Users/norman/tempData/log_pri/mongodb.log
 
 mongod --replSet rs --port 27059 --dbpath /Users/norman/tempData/db_aux --fork --logpath /Users/norman/tempData/log_aux/mongodb.log
@@ -7,13 +7,13 @@ mongod --replSet rs --port 27059 --dbpath /Users/norman/tempData/db_aux --fork -
 mongod --replSet rs --port 27060 --dbpath /Users/norman/tempData/db_arb --fork --logpath /Users/norman/tempData/log_arb/mongodb.log
 ```
 2 y 3.
-```
+```sh
 mongo --port 27058
 
 use finanzas
 ```
 4.
-```
+```js
 cfg = { _id: "rs", members: [{_id:0, host:"localhost:27058"}] }
 
 rs.initiate(cfg) // ahora 27058 es SECUNDARY
@@ -27,11 +27,11 @@ rs.status() // verifico que los members tengan rol correcto
 load("/Users/norman/Work/CapacitacionMongoBigData/Practica/clase4/facts.js") // 4 veces
 ```
 5.
-```
+```js
 db.facturas.find({nroFactura: 1020}) // 4 resultados
 ```
 6.
-```
+```js
 // replica server
 mongo --port 27059
 
@@ -44,7 +44,7 @@ show collections // --> facturas
 db.facturas.find({nroFactura: 1020}) // 4 resultados
 ```
 7.
-```
+```js
 ps aux | grep mongo
 
 kill -2 PID
@@ -95,7 +95,7 @@ db.facturas.find({nroFactura: 10000}) // --> 5 resultados
 // 27058 quedó como secundario, 59 como primario y estos 2 tienen la información de replica.
 ```
 8.
-```
+```js
 mongod --replSet rs --port 27061 --dbpath /Users/norman/tempData/db_delay --fork --logpath /Users/norman/tempData/log_delay/mongodb.log
 
 // desde PRIMARY
@@ -105,7 +105,7 @@ config.members[3].slaveDelay = 120
 rs.reconfig(config)
 ```
 9.
-```
+```js
 // desde PRIMARY
 load("/Users/norman/Work/CapacitacionMongoBigData/Practica/clase4/facts.js")
 

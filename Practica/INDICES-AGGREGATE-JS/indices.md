@@ -1,5 +1,5 @@
 2.
-```
+```js
 db.facturas.createIndex({ nroFactura: 1 })
 
 // 2.1
@@ -23,7 +23,7 @@ db.facturas.find(
 ).hint({ nroFactura: 1 })
 ```
 3.
-```
+```js
 db.facturas.createIndex({"$**": "text"}, {default_language: "spanish"})
 
 // 3.1
@@ -47,7 +47,7 @@ db.facturas.find({ $text: { $search: "/60 Ds FF/" } }).count()
  */
 ```
 4.
-```
+```js
 db.solicitudes.insert(
     [
         {
@@ -75,7 +75,7 @@ db.solicitured.createIndex({ fechaSolicitud: 1 }, { expireAfterSeconds: 60 })
 // Después de 1 minuto se borraron los documentos.
 ```
 5.
-```
+```js
 db.facturas.find({ "cliente.region": "NEA" }).explain("executionStats")
 
 // 5.1
@@ -88,7 +88,7 @@ db.facturas.createIndex({ "cliente.region": 1 })
  */
 ```
 6.
-```
+```js
 db.facturas.createIndex({ "cliente.region": 1, nroFactura: -1 })
 
 // 6.1
@@ -102,7 +102,7 @@ db.facturas.find({ "cliente.region": "NEA" }).sort({ nroFactura: -1 }).explain("
 // Sin índices el query tardó 41ms.
 ```
 7.
-```
+```js
 // 7.1
 db.comercios.find()
 
@@ -117,7 +117,7 @@ db.comercios.find({ ubicacion: {$near: [-58.420000, -34.580000], $maxDistance: 0
 // 7.5 Aumentan la cantidad de resultados
 ```
 8.
-```
+```js
 db.libros.update({ titulo: /mongodb/i }, { $set: { idioma: "english" } })
 
 db.libros.createIndex({ titulo: "text" }, { default_language: "spanish", language_override: "idioma" })

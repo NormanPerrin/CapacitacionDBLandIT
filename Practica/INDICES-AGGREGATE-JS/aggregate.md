@@ -1,5 +1,5 @@
 1.
-```
+```js
 db.facturas.aggregate([
     {
         $unwind: "$item"
@@ -20,7 +20,7 @@ db.facturas.aggregate([
 ])
 ```
 2.
-```
+```js
 db.facturas.aggregate([
     {
         $unwind: "$item"
@@ -52,7 +52,7 @@ db.facturas.aggregate([
 // }
 ```
 3.
-```
+```js
 db.facturas.aggregate([
     {
         $unwind: "$item"
@@ -78,7 +78,7 @@ db.facturas.aggregate([
 ])
 ```
 4.
-```
+```js
 db.facturas.aggregate([
     {
         $group: {
@@ -100,7 +100,7 @@ db.facturas.aggregate([
 ])
 ```
 5.
-```
+```js
 db.facturas.aggregate([
     {
         $group: {
@@ -123,7 +123,7 @@ db.facturas.aggregate([
 ])
 ```
 6.
-```
+```js
 db.facturas.aggregate([
     { $group: {_id: "$cliente.cuit"} },
     { $match: {"_id": {$gt: 2700000000}} },
@@ -132,7 +132,7 @@ db.facturas.aggregate([
 ])
 ```
 7.
-```
+```js
 db.facturas.aggregate([
     { $group: {_id: "$cliente.cuit"} },
     { $match: {"_id": {$gt: 2700000000}} },
@@ -141,7 +141,7 @@ db.facturas.aggregate([
 ])
 ```
 8.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -162,7 +162,7 @@ db.facturas.aggregate([
 ])
 ```
 9.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -186,7 +186,7 @@ db.facturas.aggregate([
 ])
 ```
 10.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -205,7 +205,7 @@ db.facturas.aggregate([
 ])
 ```
 11.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -225,7 +225,7 @@ db.facturas.aggregate([
 ])
 ```
 12.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -249,7 +249,7 @@ db.facturas.aggregate([
 ])
 ```
 13.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -268,7 +268,7 @@ db.facturas.aggregate([
 ])
 ```
 14.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -293,7 +293,7 @@ db.facturas.aggregate([
 ])
 ```
 15.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -312,7 +312,7 @@ db.facturas.aggregate([
 ])
 ```
 16.
-```
+```js
 function sumAllItems (nroFactura, cantidad) {
     return {
         nroFactura: nroFactura,
@@ -337,7 +337,7 @@ db.facturas.mapReduce(
 )
 ```
 17.
-```
+```js
 db.facturas.aggregate([
     { $unwind: "$item" },
     {
@@ -356,7 +356,4 @@ db.facturas.aggregate([
         }
     }
 ])
-```
-18.
-```
 ```

@@ -1,20 +1,20 @@
 a.
-```
+```js
     db.facturas.find().count()
 ```
 b.
-```
+```js
     db.facturas.findOne({}, {_id: 0})
 ```
 c.
-```
+```js
     db.facturas.find({
       fechaEmision: {$gt: new Date("23/02/2014")},
       nroFactura: {$lt: 1500}
     })
 ```
 d.
-```
+```js
     db.facturas.find({
       item: {$elemMatch: {producto: "CORREA 10mm"}}
     }, {
@@ -24,7 +24,7 @@ d.
       .sort({ "cliente.apellido": 1 })
 ```
 e.
-```
+```js
     db.facturas.find({
       nroFactura: {$gt: 2500, $lt: 3000}
     }, {
@@ -34,7 +34,7 @@ e.
     })
 ```
 f.
-```
+```js
     db.facturas.find({
       nroFactura: {$in: [5000, 6000, 7000, 8000]}
     }, {
@@ -42,7 +42,7 @@ f.
     })
 ```
 g.
-```
+```js
     db.facturas.find({
       "cliente.apellido": /^z/i
     })
@@ -50,7 +50,7 @@ g.
       .limit(5)
 ```
 h.
-```
+```js
     db.facturas.find({
       $or: [{"cliente.region": "CENTRO"}, {condPago: "CONTADO"}]
     })
@@ -59,7 +59,7 @@ h.
       .limit(5)
 ```
 i.
-```
+```js
     db.facturas.find({
       "cliente.apellido": {
         $not: {$in: ["Zavasi", "Malinez"]}
@@ -67,7 +67,7 @@ i.
     })
 ```
 j.
-```
+```js
     db.facturas.find({
       item: {$elemMatch: {cantidad: 15}}
     }, {
@@ -77,7 +77,7 @@ j.
       .map(function (prod) {return prod.item[0].producto})
 ```
 k.
-```
+```js
     db.facturas.find({
       "cliente.cuit": 2038373771,
       condPago: "30 Ds FF",
