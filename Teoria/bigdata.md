@@ -10,16 +10,16 @@ Técnicamente progresó al bajar los costos de almacenamiento y haberse y habers
 * Veracidad: sesgo ruido o alteración de los datos. Los datos que se almacenan deben ser relevantes al dominio del problema y válidos.
 
 ## Temas
-- Conceptos base.
-- Modelos de escalamiento.
-- Modelos de distribución y redundancia.
+- [Conceptos base](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#conceptos-base)
+- [Modelos de escalamiento](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#modelos-de-escalamiento)
+- [Modelos de distribución y redundancia](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#modelos-de-distribución-y-redundancia).
     - Replicación Maestro-Esclavo (Master/Slave)
     - Replicación Esclavo-Maestro-Esclavo (Slave-Master-Slave)
     - Replicación entre pares (peer to peer)
-- Modelos de persistencia y procesamiento.
-    - Tipos de bases de datos.
-    - Arquitectura lambda.
-- Armado datalake
+- [Modelos de persistencia y procesamiento](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#modelos-de-persistencia-y-procesamiento)
+    - [Tipos de bases de datos](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#tipos-de-bases-de-datos)
+    - [Arquitectura lambda](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#arquitectura-lambda)
+- [Armado datalake](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#armado-datalake)
 
 ## Conceptos base.
 
@@ -76,7 +76,7 @@ Casos en los que se desafían la disponibilidad cuando hay un solo servidor:
 * Óptimo para pocas escrituras y muchas lecturas.
 * No puede escalar escrituras, solo lecturas.
 
-### Replicación Slave-Master-Slave.
+### Replicación Slave-Master-Slave.
 * Todas las réplicas tienen el mismo peso.
 * Todas aceptan escrituras.
 * Cuando se escribe en nodo esclavo, se actualiza el master y de ahí se replica a los otros esclavos.
