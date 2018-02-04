@@ -13,15 +13,16 @@ Algunas caractersticas generales:
 * Se puede diferenciar data de poco uso para meterla en servers más sencillos.
 
 ## Temas
-- CRUD.
-- Aggregation Framework.
-- Transacciones.
-- Índices.
-- Replica Sets.
-- Sharding.
-- Journal.
-- Motores.
-- Monitoreo.
+- [CRUD](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#crud)
+- [Aggregation Framework](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#aggregation-framework)
+- [Transacciones](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#transacciones)
+- [Índices](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#Índices)
+- [Replica Sets](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#replica-set)
+- [Sharding](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#sharding)
+- [OPLog](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#oplog)
+- [Journal](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#journal)
+- [Motores](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#motores)
+- [Monitoreo](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#monitoreo)
 
 ## CRUD
 * Create => `db.coleccion.insert({ */doc*/ }, { /*opciones*/ })`
