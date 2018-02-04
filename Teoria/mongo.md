@@ -324,6 +324,28 @@ Lo hace mediante 2 procesos:
 * Loguea operaciones de escritura, así los nodos secundarios leen de este archivo y replican la operación en sus nodos.
 * En caso de latencia entre un secundario y primario, el secundario puede ver a otro secundario para replicar operaciones.
 
+## Motores
+Mongo tiene 2 motores para manejo de archivos (2 gratis, está el enterprise también que se maneja en memoria, or so..)
+* MMAP
+   * Usa MMAP de Unix.
+   * Tiene “lady loading” de carga de información (memoria virtual paginada por demanda).
+   * Se tiene un espacio de memoria compartido para I/O.
+   * Es bueno para compartir memoria entre procesos y carga de archivos grandes.
+   * Usa toda la memoria que puede.
+   * No es necesario crearle un tablespace. **(? Hace falta crear un namespace para alguna BD?)**
+   * Concurrencia a nivel colección.
+   * 100ms escrituras a journal.
+   * Archivos del directorio: `finanzas.ns` (tiene catálogo de la BD Finanzas), `finanzas.#num` (contiene un log REDO para un crash recovery), `journal/` (contiene un log REDO para un crash recovery), `mongo.lock` (indica que la BD está siendo accedida, o sea representa un lock para accesos).
+    * journal/ --> contiene un log REDO para un crash recovery.
+* WiredTiger
+   * Motor por default de Mongo.
+   * Soporte para compresión.
+   * Concurrencia a nivel documento.
+   * Usa lockeo con mongod.lock para operaciones de muchas bases de datos involucradas, el cual requiere lockeo global. Otras operaciones pueden requerir lockeo a nivel colección, como un drop de una colección.
+   * Usa checkpoints y snapshots de las operaciones que va realizando para tener un punto de retorno en ocación de error.
+   * 50ms escrituras a journal.
+
+
 ## Monitoreo
 
 ### Explain
