@@ -13,9 +13,9 @@ Técnicamente progresó al bajar los costos de almacenamiento y haberse y habers
 - [Conceptos base](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#conceptos-base)
 - [Modelos de escalamiento](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#modelos-de-escalamiento)
 - [Modelos de distribución y redundancia](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#modelos-de-distribución-y-redundancia).
-    - Replicación Maestro-Esclavo (Master/Slave)
-    - Replicación Esclavo-Maestro-Esclavo (Slave-Master-Slave)
-    - Replicación entre pares (peer to peer)
+    - [Replicación Maestro-Esclavo (Master/Slave)](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#replicación-maestro-esclavo-masterslave)
+    - [Replicación Esclavo-Maestro-Esclavo (Slave-Master-Slave)](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#replicación-maestro-esclavo-slavemasterslave)
+    - [Replicación entre pares (peer to peer)](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#replicación-maestro-esclavo-peer-to-peer)
 - [Modelos de persistencia y procesamiento](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#modelos-de-persistencia-y-procesamiento)
     - [Tipos de bases de datos](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#tipos-de-bases-de-datos)
     - [Arquitectura lambda](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/bigdata.md#arquitectura-lambda)
