@@ -14,6 +14,8 @@ Algunas caractersticas generales:
 
 ## Temas
 - [CRUD](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#crud)
+- [Colecciones](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#colecciones)
+   - [Capped Collectiions](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#capped-collections)
 - [Aggregation Framework](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#aggregation-framework)
 - [Transacciones](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#transacciones)
 - [Índices](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#Índices)
@@ -35,6 +37,39 @@ Algunas operaciones como el find, devuelve un cursor, el cual podemos chainearle
 * `.skip()`
 * `.hasNext()`
 * `.next()`
+
+## Colecciones
+
+### Views
+Vistas de solo lectura creadas a partir de colecciones existentes u otras vistas.
+
+**Crear vista**
+```js
+db.createView(<view>, <source>, <pipeline>, <collation>)
+```
+
+**Características**
+* No se puede modificar su nombre una vez creado.
+* Find no soporta los siguientes operadores:
+   * `$`
+   * `$elemMatch`
+   * `$slice`
+   * `$meta`
+* Usan los índices de las colecciones subyacentes, por lo tanto las vistas no tienen índices ni se puede especificar `$natural` en el `.sort()`.
+
+### Capped Collectiions
+Colecciones de tamaño fijo, soportan alto tráfico de operaciones de inserción. Trabajan como los buffers circulares, una vez que llena su capacidad, va reemplazando a los más viejos por los nuevos. Se puede crear una capped collection dentro de Mongo:
+```js
+db.createCollection("log", { capped : true, size : 5242880, max : 5000 } ), con max como máximo de docs.
+```
+
+**Características:**
+* Orden de inserción: garantizan la preservación del orden de inserción, como resultado, las queries no necesitan índices para retornar documentos en orden de inserción. Por esto, es que estas colecciones pueden soportar mayor cantidad de operaciones de inserción.
+* Si una operación sobre esta colección cambia el tamaño de un documento, falla la operación.
+* No es particionable.
+* Se pueden traer documentos en orden inverso con `.sort({ $natural: -1 })`
+* No es compatible con índices TTL, este sería una alternativa.
+
 
 ## Aggregation Framework
 ```js
@@ -338,7 +373,7 @@ Mongo tiene 2 motores para manejo de archivos (2 gratis, está el enterprise tam
    * 100ms escrituras a journal.
    * Archivos del directorio: `finanzas.ns` (tiene catálogo de la BD Finanzas), `finanzas.#num` (contiene un log REDO para un crash recovery), `journal/` (contiene un log REDO para un crash recovery), `mongo.lock` (indica que la BD está siendo accedida, o sea representa un lock para accesos).
     * journal/ --> contiene un log REDO para un crash recovery.
-* WiredTiger
+* WiredTiger 
    * Motor por default de Mongo.
    * Soporte para compresión.
    * Concurrencia a nivel documento.
@@ -348,6 +383,15 @@ Mongo tiene 2 motores para manejo de archivos (2 gratis, está el enterprise tam
 
 
 ## Monitoreo
+Mongo cuenta con una BD profiler, que guarda info de operaciones. Se puede habilitar este servicio por BD o instancia y configurarlo cuando se habilita.
+
+**Habilitar profiling**
+```js
+use finanzas
+db.setProfilingLevel(2) // 0: deshabilitado, 1: operaciones lentas, 2: activado
+```
+
+
 
 ### Explain
 Se le puede agregar a un cursor y el mismo ejecutará la operación planificada y dirá los pasos que realizó, según los detalles que queramos:
