@@ -13,18 +13,19 @@ Algunas caractersticas generales:
 * Se puede diferenciar data de poco uso para meterla en servers más sencillos.
 
 ## Temas
-- [CRUD](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#crud)
-- [Colecciones](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#colecciones)
-   - [Capped Collectiions](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#capped-collections)
-- [Aggregation Framework](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#aggregation-framework)
-- [Transacciones](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#transacciones)
-- [Índices](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#Índices)
-- [Replica Sets](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#replica-set)
-- [Sharding](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#sharding)
-- [OPLog](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#oplog)
-- [Journal](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#journal)
-- [Motores](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#motores)
-- [Monitoreo](https://github.com/NormanPerrin/CapacitacionMongoBigData/blob/master/Teoria/mongo.md#monitoreo)
+- [CRUD](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#crud)
+- [Colecciones](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#colecciones)
+   - [Views](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#views)
+   - [Capped Collectiions](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#capped-collections)
+- [Aggregation Framework](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#aggregation-framework)
+- [Transacciones](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#transacciones)
+- [Índices](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#Índices)
+- [Replica Sets](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#replica-set)
+- [Sharding](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#sharding)
+- [OPLog](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#oplog)
+- [Journal](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#journal)
+- [Motores](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#motores)
+- [Monitoreo](https://github.com/NormanPerrin/CapacitacionDBLandIT/blob/master/Teoria/mongo.md#monitoreo)
 
 ## CRUD
 * Create => `db.coleccion.insert({ */doc*/ }, { /*opciones*/ })`
@@ -43,9 +44,15 @@ Algunas operaciones como el find, devuelve un cursor, el cual podemos chainearle
 ### Views
 Vistas de solo lectura creadas a partir de colecciones existentes u otras vistas.
 
-**Crear vista**
+**Manejo vista**
 ```js
+// crear
 db.createView(<view>, <source>, <pipeline>, <collation>)
+
+// eliminar
+db.collection.drop()
+
+// se puede modificar una colección tirándola abajo y creándola de nuevo o usando el comando collMod
 ```
 
 **Características**
@@ -56,6 +63,12 @@ db.createView(<view>, <source>, <pipeline>, <collation>)
    * `$slice`
    * `$meta`
 * Usan los índices de las colecciones subyacentes, por lo tanto las vistas no tienen índices ni se puede especificar `$natural` en el `.sort()`.
+* Las vistas son procesadas a demanda en operaciones de lectura, y mongo ejecuta operaciones de lectura sobre vistas como parte de una agregación, por lo que no se puede usar
+   * `.mapReduce()`
+   * `$text`
+   * comando `geoNear` y `$geoNear`
+* Se considera particionada si la colección subyacente está particionada. Por lo tanto no se puede espeficiar una vista particionada en una operación `$lookup` ni `$graphLook`.
+
 
 ### Capped Collectiions
 Colecciones de tamaño fijo, soportan alto tráfico de operaciones de inserción. Trabajan como los buffers circulares, una vez que llena su capacidad, va reemplazando a los más viejos por los nuevos. Se puede crear una capped collection dentro de Mongo:
@@ -391,7 +404,106 @@ use finanzas
 db.setProfilingLevel(2) // 0: deshabilitado, 1: operaciones lentas, 2: activado
 ```
 
+**Consultar estadísticas del servidor**
+```js
+db.serverStatus()
+```
 
+**Consultar estadísticas de una BD**
+```js
+db.stats()
+```
+
+**Consultar estadísticas de una colección**
+```js
+db.facturas.stats()
+```
+
+**Consultar operaciones ejecutadas de una instancia**
+Se puede especificarle un valor booleano o doc, si es booleano es lo mismo que `{ "$all": true }`. El doc que se puede especificar es un filtro del output, ejemplo `{ "currentOp.op": "update" }`.
+```js
+db.currentOp()
+```
+
+Explicación de algunos atributos del output.
+* `currentOp.active`: true si la operación comenzó, false si está encolada.
+* `currentOp.secs_running`: duración en sgs, solo aparece cuando está activa.
+* `currentOp.op`: tipo de operación
+   * none
+   * "update"
+   * "insert"
+   * "query"
+   * "getmore"
+   * "remove"
+   * "killcursors"
+* `currentOp.locks`: reporta tipos de lockeo se ponen para la operación
+   * R representa un lockeo global de lectura.
+   * W representa un lockeo global de escritura.
+   * r representa un lockeo específico de lectura sobre una BD.
+   * w representa un lockeo específico de escritura sobre una BD.
+* `currentOp.locks.^`: reporta el uso de lock global para instancia mongod
+* `currentOp.numYields`: Contador que reporta el número de veces ha cedido para que otras operaciones se completen.
+
+**Matar una operación**
+```js
+db.killOp(opID)
+```
+
+**Monitoreo de operaciones**
+`mongostat` provee un resumen del estado de la instacia cada 1 sg.
+```sh
+mongostat --port 127.0.0.1 --port 27027 >> stats.txt
+```
+
+También le puedo especificar cada cuánto quiero que se ejecute.
+```js
+// Ejecuta el mongostat cada 15 segundos
+mongostat --port 127.0.0.1 --port 27027 --rowcount 15
+
+// Ejecuta el mongostat cada 20 veces cada 30 segundos
+mongostat --port 127.0.0.1 --port 27027 --rowcount 20 30
+```
+
+`mongotop` provee información sobre cuánto tiempo las colecciones de una instancia se pasan leyendo o escribiendo. Provee estadísticas a nivel colección.
+```sh
+mongotop --host 127.0.0.1 --port 20000 >>top.txt
+```
+
+`mongoaudit` herramienta automatizada que corre una serie de pruebas para detectar fallas de seguridad en las instancias de MongoDB.
+
+**Compactación**
+Reescribe y desfragmenta toda la data de una colección. Necesita 2GB de disco adicional durante esta operación.
+```js
+// se le puede pasar como parámetro "PaddingFactor" y "PaddingBytes"
+runCommand{compact: "colección"}
+```
+
+**Reparación BD**
+Reescribe y desfragmenta toda la data de una colección, y también los índices de la misma. Requiere más de 2 gigabytes de espacio de disco adicional, cuanto está corriendo. En el proceso de repairDatabase, se reescribirán los data files compactándolos. Tener en cuenta que los documentos corruptos no los copiará y se perderán.
+```js
+// se le puede pasar como parámetro "preserveClonedFilesOnFailure" y "backupOriginalFiles"
+runCommand{repairDatabase: 1} o db.repairDatabase()
+```
+
+### Linux
+**Restricciones**
+* 64bits
+* kernel 2.6.36 o superior
+* Ext4 o XFS
+
+**Recomendaciones**
+* Desactivar el atime del storage volume con los archivos de la Base de Datos.
+* No utilizar hugepages para las páginas de la Memoria Virtual (hugepages virtual memory pages), MongoDB se desempeña mejor con las páginas normales de la Memoria Virtual (normal virtual memory pages).
+* Desabilitar NUMA en la BIOS o invoque al mongod con NUMA desabilitado.
+* Asegurarse que el seteo del readahead para los bloques donde están almacenados los archivos de la base de datos sea relativamente pequeño ya que la mayoría de los accesos son de modo no-secuencial.
+* Sincronice la hora entre sus Servidores. Esto es especialmente importante en Clusters de MongoDB
+* ulimit
+   * -f (file size): ilimitado
+   * -t (cpu time): ilimitado
+   * -v (virtual memory): ilimitado
+   * -n (open files): superior a 20,000
+   * -m (memory size): ilimitado
+   * -u (processes/threads): superior a 20,000
 
 ### Explain
 Se le puede agregar a un cursor y el mismo ejecutará la operación planificada y dirá los pasos que realizó, según los detalles que queramos:
